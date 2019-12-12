@@ -14,19 +14,40 @@ import {
   View,
   Text,
   Button,
+  TextInput,
 } from 'react-native';
 import { ADD } from '../actions/todoAction';
 import { connect } from 'react-redux';
 
 class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {text: ''};
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
         <View>
           <Text style={{ textAlign: "center" }}>To Do</Text>
 
+          <TextInput
+              editable
+              maxLength={20}
+              placeholder="Enter a task"
+              value={this.state.text}
+              onChangeText={(text) => this.setState({text})}
+              style={{ 
+                backgroundColor: "white",
+                borderBottomColor: "#000000",
+                borderBottomWidth: 1,
+                margin: 16,
+                padding: 4,
+              }}
+          />
           <Button title="Add" onPress={() => {
-            this.props.add()
+            this.props.add(this.state.text)
           }}/>
 
         <Text>Tasks : { this.props.todos }</Text>
@@ -51,7 +72,7 @@ const mapStateToProps = (props) => {
 
 const mapStateToDispatch = (dispatch) => {
   return {
-    add: () => {dispatch({ type: ADD, task: "Two" })}
+    add: (text) => {dispatch({ type: ADD, task: text })}
   }
 }
 
